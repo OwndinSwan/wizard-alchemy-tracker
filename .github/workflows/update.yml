@@ -1,0 +1,32 @@
+name: Fetch Latest Codes
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs every 6 hours
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  update-codes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run Fetcher Script
+        run: python fetcher.py
+
+      - name: Commit and Push codes.json
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add codes.json
+          git commit -m "Auto-update active codes" || exit 0
+          git push
