@@ -5,8 +5,6 @@ import re
 TARGET_GAMES = {
     "10006104044": "Wizard Alchemy",
     "4746011041": "Untitled Boxing Game",
-    "UNIVERSE_ID_HERE": "Sailor Piece",
-    "UNIVERSE_ID_HERE": "Ro Ghoul"
 }
 
 universe_ids = ",".join(TARGET_GAMES.keys())
