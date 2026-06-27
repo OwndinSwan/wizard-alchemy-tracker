@@ -3,15 +3,14 @@
     "games": [
         {
             "name": "Wizard Alchemy",
-            "codes": []
+            "codes": [
+                "Kupal",
+                "Kupal Kupal"
+            ]
         },
         {
             "name": "Untitled Boxing Game",
-            "codes": [
-                "Tae",
-                "Tae",
-                "Tae"
-            ]
+            "codes": []
         },
         {
             "name": "Sailor Piece",
