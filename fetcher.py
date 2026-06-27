@@ -24,7 +24,8 @@ try:
         name = TARGET_GAMES.get(uid, game.get("name", "Unknown"))
         desc = game.get("description", "")
         
-        match = re.search(r"codes?[\s:]+([A-Z0-9,\s]+)", desc, re.IGNORECASE)
+        # Tightened Regex to stop catching trailing words
+        match = re.search(r'codes?[\s:]+([A-Z0-9,\s]+?)(?:\s+[a-z]|\!|\.|$)', desc)
         
         active_codes = []
         if match:
@@ -43,19 +44,4 @@ try:
 except Exception as e:
     print(f"Execution failed: {e}")
     raise e
-            # Clean up the text and split into a list
-            raw_codes = match.group(1).replace('and', '').replace(' ', '')
-            active_codes = [code for code in raw_codes.split(',') if code]
-            
-        # Add the results to our master list
-        final_output["games"].append({
-            "name": name,
-            "codes": active_codes
-        })
-        
-    # Save the combined data
-    with open('codes.json', 'w') as f:
-        json.dump(final_output, f, indent=4)
-        
-except Exception as e:
-    print(f"Error: {e}")
+    
