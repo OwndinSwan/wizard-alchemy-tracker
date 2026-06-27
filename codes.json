@@ -3,7 +3,14 @@
     "games": [
         {
             "name": "Wizard Alchemy",
-            "codes": []
+            "codes": [
+                "17kCCU",
+                "SPELL",
+                "20kMembers",
+                "BREW",
+                "SPIDER",
+                "POISON"
+            ]
         }
     ]
 }
