@@ -1,16 +1,4 @@
 {
     "status": "success",
-    "games": [
-        {
-            "name": "Wizard Alchemy",
-            "codes": [
-                "17kCCU",
-                "SPELL",
-                "20kMembers",
-                "BREW",
-                "SPIDER",
-                "POISON"
-            ]
-        }
-    ]
+    "games": []
 }
