@@ -2,8 +2,8 @@ name: Fetch Latest Codes
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Runs every 6 hours
-  workflow_dispatch: # Allows you to run it manually
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   update-codes:
@@ -13,20 +13,21 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches full history so git doesn't get confused
+          fetch-depth: 0
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Run Fetcher Script
         run: python fetcher.py
 
-      - name: Auto Commit and Push codes.json
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Safe Auto-Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Auto-update active codes"
           file_pattern: 'codes.json'
+          
