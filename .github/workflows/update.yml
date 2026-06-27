@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetches full history so git doesn't get confused
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -23,10 +25,8 @@ jobs:
       - name: Run Fetcher Script
         run: python fetcher.py
 
-      - name: Commit and Push codes.json
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add codes.json
-          git commit -m "Auto-update active codes" || exit 0
-          git push -f origin HEAD:main
+      - name: Auto Commit and Push codes.json
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-update active codes"
+          file_pattern: 'codes.json'
