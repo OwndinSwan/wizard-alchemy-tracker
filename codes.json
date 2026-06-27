@@ -1,9 +1,13 @@
 {
-    "game": "Wizard Alchemy",
-    "codes": [
-        "DRUID",
-        "SUMMON",
-        "80KMEMBERStoclaimfreelaunchrewards"
-    ],
-    "status": "success"
+    "status": "success",
+    "games": [
+        {
+            "name": "Wizard Alchemy",
+            "codes": [
+                "DRUID",
+                "SUMMON",
+                "80KMEMBERS"
+            ]
+        }
+    ]
 }
