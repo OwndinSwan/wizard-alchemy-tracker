@@ -1,4 +1,25 @@
 {
     "status": "success",
-    "games": []
+    "games": [
+        {
+            "name": "Wizard Alchemy",
+            "codes": []
+        },
+        {
+            "name": "Untitled Boxing Game",
+            "codes": [
+                "Tae",
+                "Tae",
+                "Tae"
+            ]
+        },
+        {
+            "name": "Sailor Piece",
+            "codes": []
+        },
+        {
+            "name": "Ro Ghoul",
+            "codes": []
+        }
+    ]
 }
