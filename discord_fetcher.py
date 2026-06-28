@@ -42,7 +42,7 @@ def fetch_discord_codes():
                 
                 if start_parsing and line:
                     # Strip out any lingering edits or annotations like '(edited)'
-                    clean_code = re.sub(r'\(edited\).*', '', line).strip()
+                    clean_code = re.sub(r'\(edited\).*', '', line).replace('`', '').strip()
                     if clean_code:
                         extracted_codes.append(clean_code)
             
