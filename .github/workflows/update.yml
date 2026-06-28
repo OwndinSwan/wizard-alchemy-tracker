@@ -1,33 +1,33 @@
-name: Fetch Latest Codes
-
+name: Auto Fetch Discord Codes
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+    - cron: '0 */3 * * *' # Runs every 3 hours
+  workflow_dispatch: # Gives you a button to run it manually
 
 jobs:
-  update-codes:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Allows the bot to save the codes.json file
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Run Fetcher Script
-        run: python fetcher.py
-
-      - name: Safe Auto-Commit
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Auto-update active codes"
-          file_pattern: 'codes.json'
-          
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Run Fetcher
+      env:
+        # Pulls your secret token from the vault
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      run: python discord_fetcher.py
+      
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "actions@github.com"
+        git add codes.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-updated Wizard Alchemy codes from Discord" && git push)
+        
