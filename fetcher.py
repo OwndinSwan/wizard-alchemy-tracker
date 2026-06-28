@@ -2,6 +2,7 @@ import urllib.request
 import json
 import re
 import os
+from datetime import datetime, timezone  # NEW: Added for timestamping
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
 
@@ -117,6 +118,9 @@ def main():
     with open(file_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
+    # NEW: Generate a standard UTC timestamp string for this specific script run
+    current_time = datetime.now(timezone.utc).isoformat()
+        
     for game in database.get("games", []):
         source_type = game.get("source_type", "manual")
         source_id = game.get("source_id", "")
@@ -126,15 +130,18 @@ def main():
             fresh_codes = fetch_from_discord(source_id)
             if fresh_codes is not None:
                 game["codes"] = fresh_codes
+                game["last_updated"] = current_time  # NEW: Stamp the check time
                 
         elif source_type == "roblox" and source_id:
             print(f"Querying automated Roblox description pipeline for: {game['name']}")
             fresh_codes = fetch_from_roblox(source_id)
             if fresh_codes is not None:
                 game["codes"] = fresh_codes
+                game["last_updated"] = current_time  # NEW: Stamp the check time
                 
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
+            # Notice we do NOT stamp manual games here, because this script didn't check them!
 
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
@@ -142,4 +149,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+        
