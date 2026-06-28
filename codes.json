@@ -16,7 +16,13 @@
         },
         {
             "name": "Evomon",
-            "codes": [],
+            "codes": [
+                "2K-LIKES",
+                "THXFOR5K",
+                "12klikes",
+                "20000LIKES",
+                "30K-LIKES"
+            ],
             "source_type": "roblox",
             "source_id": "134381727982611"
         }
