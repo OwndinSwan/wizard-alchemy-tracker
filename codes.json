@@ -3,14 +3,15 @@
     "games": [
         {
             "name": "Wizard Alchemy",
-            "codes": [
-                "17kCCU",
-                "SPELL",
-                "20kMembers",
-                "BREW",
-                "spider",
-                "poison"
-            ]
+            "codes": [],
+            "source_type": "discord",
+            "source_id": "1479652832155275307"
+        },
+        {
+            "name": "Untitled Boxing Game",
+            "codes": [],
+            "source_type": "roblox",
+            "source_id": "4746011041"
         }
     ]
 }
