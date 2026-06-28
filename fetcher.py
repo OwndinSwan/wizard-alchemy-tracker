@@ -51,14 +51,31 @@ def fetch_from_roblox(universe_id):
             data = json.loads(response.read().decode("utf-8"))
             for game in data.get("data", []):
                 desc = game.get("description", "")
-                match = re.search(r'codes?[\s:]+([A-Z0-9,\s]+?)(?:\s+[a-z]|\!|\.|$)', desc)
+                
+                # Look for "Codes:" (case-insensitive) and grab everything after it until a newline
+                match = re.search(r'(?i)codes?[\s:]+([^\n]+)', desc)
                 if match:
-                    raw_codes = match.group(1).replace("and", "").replace(" ", "")
-                    return [c for c in raw_codes.split(",") if c]
+                    raw_line = match.group(1)
+                    
+                    # Chop off trailing sentences if they didn't use newlines (e.g., "Next code at 60k!")
+                    raw_line = re.split(r'[.!|]', raw_line)[0] 
+                    
+                    # Replace words like "and" or "&" with commas so we can split easily
+                    raw_line = re.sub(r'(?i)\band\b|&', ',', raw_line)
+                    
+                    active_codes = []
+                    for chunk in raw_line.split(','):
+                        # Extract the exact alphanumeric + hyphen code from each comma chunk
+                        code_match = re.search(r'([a-zA-Z0-9\-]+)', chunk)
+                        if code_match:
+                            active_codes.append(code_match.group(1))
+                            
+                    return active_codes
             return None
     except Exception as e:
         print(f"Extraction error processing Roblox Universe {universe_id}: {e}")
         return None
+
 
 def main():
     file_path = "codes.json"
