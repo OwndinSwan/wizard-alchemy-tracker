@@ -28,7 +28,10 @@
         },
         {
             "name": "Anime Fighting Simulator",
-            "codes": [],
+            "codes": [
+                "UPDATE2PLAY",
+                "DELAYCODE"
+            ],
             "source_type": "discord",
             "source_id": "1452386371707863073"
         }
