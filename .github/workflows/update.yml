@@ -1,14 +1,14 @@
-name: Auto Fetch Discord Codes
+name: Auto Fetch Live Engine Codes
 on:
   schedule:
-    - cron: '0 */3 * * *' # Runs every 3 hours
-  workflow_dispatch: # Gives you a button to run it manually
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Allows the bot to save the codes.json file
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -18,16 +18,15 @@ jobs:
       with:
         python-version: '3.10'
         
-    - name: Run Fetcher
+    - name: Run Unified Fetcher Engine
       env:
-        # Pulls your secret token from the vault
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-      run: python discord_fetcher.py
+      run: python fetcher.py
       
-    - name: Commit and Push Changes
+    - name: Commit and Push Database Synchronizations
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "actions@github.com"
         git add codes.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-updated Wizard Alchemy codes from Discord" && git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Engine Auto-Sync: Refreshed multi-source structural tracking arrays" && git push)
         
