@@ -6,6 +6,7 @@ import os
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
 
 def fetch_from_discord(channel_id):
+def fetch_from_discord(channel_id):
     if not DISCORD_TOKEN:
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return None
@@ -28,19 +29,36 @@ def fetch_from_discord(channel_id):
             start_parsing = False
             for line in lines:
                 line = line.strip()
-                if "Codes:" in line:
+                if not line:
+                    continue
+                
+                # [Layout 1]: Developer used "Codes:" as a header (Like Wizard Alchemy)
+                if "Codes:" in line or line.replace('`', '').replace('*', '').strip() == "Codes":
                     start_parsing = True
                     continue
                 
-                if start_parsing and line:
-                    # Clean up trailing notes and strip backtick formatting
+                if start_parsing:
+                    # Extract everything below the header
                     clean_code = re.sub(r'\(edited\).*', '', line).replace('`', '').strip()
                     if clean_code:
                         extracted_codes.append(clean_code)
+                else:
+                    # [Layout 2]: Developer used "CODE - Reward" format
+                    # Clean out the markdown backticks and bold stars first
+                    clean_line = line.replace('`', '').replace('*', '').strip()
+                    
+                    # Look for alphanumeric text followed by a hyphen/colon and a space
+                    match = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', clean_line)
+                    if match:
+                        # match.group(1) is the Code, match.group(2) is the Reward
+                        extracted_codes.append(match.group(1))
+                        
             return extracted_codes
+            
     except Exception as e:
         print(f"Extraction error processing Discord channel {channel_id}: {e}")
         return None
+
 
 def fetch_from_roblox(source_id):
     # Step 1: Automatically try to translate a Place ID into a Universe ID
