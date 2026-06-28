@@ -6,7 +6,6 @@ import os
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
 
 def fetch_from_discord(channel_id):
-def fetch_from_discord(channel_id):
     if not DISCORD_TOKEN:
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return None
@@ -107,7 +106,6 @@ def fetch_from_roblox(source_id):
     except Exception as e:
         print(f"Extraction error processing Roblox ID {source_id}: {e}")
         return None
-
 
 
 def main():
