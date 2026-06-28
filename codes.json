@@ -4,19 +4,13 @@
         {
             "name": "Wizard Alchemy",
             "codes": [
-                "Burat"
+                "DRUID",
+                "SUMMON",
+                "80KMEMBERS"
             ]
         },
         {
             "name": "Untitled Boxing Game",
-            "codes": []
-        },
-        {
-            "name": "Sailor Piece",
-            "codes": []
-        },
-        {
-            "name": "Ro Ghoul",
             "codes": []
         }
     ]
