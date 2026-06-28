@@ -42,7 +42,21 @@ def fetch_from_discord(channel_id):
         print(f"Extraction error processing Discord channel {channel_id}: {e}")
         return None
 
-def fetch_from_roblox(universe_id):
+def fetch_from_roblox(source_id):
+    # Step 1: Automatically try to translate a Place ID into a Universe ID
+    universe_id = source_id
+    try:
+        convert_url = f"https://apis.roblox.com/universes/v1/places/{source_id}/universe"
+        convert_req = urllib.request.Request(convert_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(convert_req) as response:
+            convert_data = json.loads(response.read().decode("utf-8"))
+            if "universeId" in convert_data:
+                universe_id = convert_data["universeId"]
+    except Exception:
+        # If it fails, we assume the user already provided a valid Universe ID
+        pass
+
+    # Step 2: Fetch the game description using the correct Universe ID
     url = f"https://games.roblox.com/v1/games?universeIds={universe_id}"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     
@@ -57,7 +71,7 @@ def fetch_from_roblox(universe_id):
                 if match:
                     raw_line = match.group(1)
                     
-                    # Chop off trailing sentences if they didn't use newlines (e.g., "Next code at 60k!")
+                    # Chop off trailing sentences if they didn't use newlines
                     raw_line = re.split(r'[.!|]', raw_line)[0] 
                     
                     # Replace words like "and" or "&" with commas so we can split easily
@@ -65,7 +79,7 @@ def fetch_from_roblox(universe_id):
                     
                     active_codes = []
                     for chunk in raw_line.split(','):
-                        # Extract the exact alphanumeric + hyphen code from each comma chunk
+                        # Extract the exact alphanumeric + hyphen code
                         code_match = re.search(r'([a-zA-Z0-9\-]+)', chunk)
                         if code_match:
                             active_codes.append(code_match.group(1))
@@ -73,8 +87,9 @@ def fetch_from_roblox(universe_id):
                     return active_codes
             return None
     except Exception as e:
-        print(f"Extraction error processing Roblox Universe {universe_id}: {e}")
+        print(f"Extraction error processing Roblox ID {source_id}: {e}")
         return None
+
 
 
 def main():
