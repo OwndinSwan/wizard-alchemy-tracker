@@ -1,5 +1,11 @@
 {
-    "unread_count": 0,
-    "logs": [],
-    "system_state": "Operational"
+    "unread_count": 1,
+    "logs": [
+        {
+            "type": "error",
+            "message": "CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error 401). Update GitHub Secrets.",
+            "timestamp": "Jun 29, 11:50 UTC"
+        }
+    ],
+    "system_state": "Error"
 }
