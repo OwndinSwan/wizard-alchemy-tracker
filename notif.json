@@ -1,46 +1,5 @@
 {
-    "unread_count": 6,
-    "logs": [
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Climb and Jump Tower: SPACE",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Climb and Jump Tower: BRAZIL",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Climb and Jump Tower: TORONTO",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Climb and Jump Tower: ADMIN",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1MILL",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: SUMMERBLAST",
-            "timestamp": "Jun 29, 15:39 UTC"
-        },
-        {
-            "type": "resolved",
-            "message": "\u2705 SYSTEM RECOVERED: Auto-recovered and fully functional.",
-            "timestamp": "Jun 29, 12:22 UTC"
-        },
-        {
-            "type": "error",
-            "message": "CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error 401). Update GitHub Secrets.",
-            "timestamp": "Jun 29, 11:50 UTC"
-        }
-    ],
+    "unread_count": 0,
+    "logs": [],
     "system_state": "Operational"
 }
