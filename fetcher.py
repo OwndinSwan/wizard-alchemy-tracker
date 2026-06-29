@@ -63,8 +63,13 @@ def fetch_from_discord(channel_id):
                 start_parsing = False
                 for i, raw_line in enumerate(cleaned_lines):
                     
-                    # Pre-clean the (edited) tag immediately so it doesn't break naked codes
-                    line = re.sub(r'\s*\(edited\).*', '', raw_line).strip()
+                    # 1. The Parenthesis Eraser: Wipe out rewards inside brackets e.g. "(x1 Shards)"
+                    line = re.sub(r'\s*\(.*?\)', '', raw_line)
+                    # 2. Wipe out Discord's trailing edited tags
+                    line = re.sub(r'\s*\(edited\).*', '', line).strip()
+                    
+                    if not line:
+                        continue
                     
                     if "expired" in line.lower():
                         continue
@@ -87,25 +92,22 @@ def fetch_from_discord(channel_id):
                                 extracted_codes.append(candidate)
                                 continue
 
-                        # Layout 5: Inline Keyword (Upgraded for Multi-Codes & Missing Colons)
+                        # Layout 5: Inline Keyword
                         match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*(.*)', line)
                         if match_layout5:
                             raw_candidates = match_layout5.group(1)
                             
-                            # Handle explicitly quoted codes (e.g. "SPACE & 500MVISITS")
                             quoted_match = re.findall(r'["\']([a-zA-Z0-9_\-\s&,]+)["\']', raw_candidates)
                             if quoted_match:
                                 text_to_parse = quoted_match[0]
                             else:
                                 text_to_parse = raw_candidates
                                 
-                            # Convert ampersands to commas to unify splitting
                             normalized = re.sub(r'(?i)\s+and\s+|\s*&\s*', ',', text_to_parse)
                             chunks = normalized.split(',')
                             found_valid = False
                             
                             for chunk in chunks:
-                                # Grab the first block of alphanumeric text per chunk
                                 code_match = re.search(r'([a-zA-Z0-9_\-]+)', chunk)
                                 if code_match:
                                     candidate = code_match.group(1)
@@ -116,7 +118,7 @@ def fetch_from_discord(channel_id):
                             if found_valid:
                                 continue
 
-                        # Layout 3.5: Naked Multi-Code (e.g. "ANGEL, DEMON")
+                        # Layout 3.5: Naked Multi-Code 
                         if ',' in line or '&' in line:
                             chunks = re.sub(r'(?i)\s+and\s+|\s*&\s*', ',', line).split(',')
                             valid_chunks = []
@@ -126,7 +128,6 @@ def fetch_from_discord(channel_id):
                                     if any(char.isdigit() for c in candidate) or candidate.isupper():
                                         valid_chunks.append(candidate)
                             
-                            # Extremely strict: Only extract if EVERY comma-separated item is a valid code
                             if len(valid_chunks) > 0 and len(valid_chunks) == len(chunks):
                                 extracted_codes.extend(valid_chunks)
                                 continue
@@ -221,7 +222,6 @@ def fetch_from_roblox(source_id):
     return None
 
 def main():
-    # File Paths
     codes_path = "codes.json"
     notif_path = "notif.json"
     
@@ -229,15 +229,12 @@ def main():
         print(f"Error: Target database {codes_path} missing from environment root.")
         return
         
-    # Load Core Database
     with open(codes_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
-    # Remove old system_status from codes.json to keep it purely for the frontend
     if "system_status" in database:
         del database["system_status"]
 
-    # Load Notification Database (Create default if it doesn't exist)
     if not os.path.exists(notif_path):
         notifs = {"unread_count": 0, "logs": [], "system_state": "Operational"}
     else:
@@ -245,8 +242,6 @@ def main():
             notifs = json.load(nf)
 
     def add_notification(notif_type, message):
-        """Helper to inject logs and perform log rotation."""
-        # Using PHT and a readable 12-hour AM/PM format
         timestamp = datetime.now(PHT).strftime('%b %d, %I:%M %p PHT')
         notifs["logs"].insert(0, {
             "type": notif_type,
@@ -254,11 +249,9 @@ def main():
             "timestamp": timestamp
         })
         notifs["unread_count"] += 1
-        # Log Rotation: Keep only the latest 30 notifications
         if len(notifs["logs"]) > 30:
             notifs["logs"] = notifs["logs"][:30]
 
-    # Timestamp for codes.json last_updated
     current_time = datetime.now(PHT).isoformat()
     old_system_state = notifs.get("system_state", "Operational")
     run_has_error = False
@@ -278,7 +271,6 @@ def main():
                 latest_error = fresh_codes["error"]
                 print(latest_error)
             elif fresh_codes is not None:
-                # Compare codes to find new ones
                 newly_added = set(fresh_codes) - old_codes
                 if newly_added:
                     for code in newly_added:
@@ -309,21 +301,15 @@ def main():
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
 
-    # ==========================================
-    # AUTO-HEAL & NOTIFICATION RESOLUTION LOGIC
-    # ==========================================
     if run_has_error:
-        # Only log the error if the system wasn't already in an error state
         if old_system_state == "Operational":
             add_notification("error", latest_error)
         notifs["system_state"] = "Error"
     else:
-        # If it was previously broken, log the recovery
         if old_system_state == "Error":
             add_notification("resolved", "✅ SYSTEM RECOVERED: Auto-recovered and fully functional.")
         notifs["system_state"] = "Operational"
 
-    # Save both databases safely
     with open(codes_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
         
@@ -334,4 +320,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-                    
+    
