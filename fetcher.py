@@ -5,9 +5,11 @@ import re
 import os
 import random
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
+# Define Philippine Standard Time (UTC + 8)
+PHT = timezone(timedelta(hours=8))
 
 def get_free_proxies():
     """Fetches a list of free public HTTP proxies to bypass rate limits."""
@@ -183,15 +185,12 @@ def main():
         print(f"Error: Target database {codes_path} missing from environment root.")
         return
         
-    # Load Core Database
     with open(codes_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
-    # Remove old system_status from codes.json to keep it purely for the frontend
     if "system_status" in database:
         del database["system_status"]
 
-    # Load Notification Database (Create default if it doesn't exist)
     if not os.path.exists(notif_path):
         notifs = {"unread_count": 0, "logs": [], "system_state": "Operational"}
     else:
@@ -199,19 +198,18 @@ def main():
             notifs = json.load(nf)
 
     def add_notification(notif_type, message):
-        """Helper to inject logs and perform log rotation."""
-        timestamp = datetime.now(timezone.utc).strftime('%b %d, %H:%M UTC')
+        # Now uses PHT timezone for logs
+        timestamp = datetime.now(PHT).strftime('%b %d, %H:%M PHT')
         notifs["logs"].insert(0, {
             "type": notif_type,
             "message": message,
             "timestamp": timestamp
         })
         notifs["unread_count"] += 1
-        # Log Rotation: Keep only the latest 30 notifications
         if len(notifs["logs"]) > 30:
             notifs["logs"] = notifs["logs"][:30]
 
-    current_time = datetime.now(timezone.utc).isoformat()
+    current_time = datetime.now(PHT).isoformat()
     old_system_state = notifs.get("system_state", "Operational")
     run_has_error = False
     latest_error = ""
@@ -230,7 +228,6 @@ def main():
                 latest_error = fresh_codes["error"]
                 print(latest_error)
             elif fresh_codes is not None:
-                # Compare codes to find new ones
                 newly_added = set(fresh_codes) - old_codes
                 if newly_added:
                     for code in newly_added:
@@ -261,21 +258,17 @@ def main():
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
 
-    # ==========================================
-    # AUTO-HEAL & NOTIFICATION RESOLUTION LOGIC
-    # ==========================================
     if run_has_error:
-        # Only log the error if the system wasn't already in an error state
         if old_system_state == "Operational":
             add_notification("error", latest_error)
         notifs["system_state"] = "Error"
     else:
-        # If it was previously broken, log the recovery
         if old_system_state == "Error":
-            add_notification("resolved", "✅ SYSTEM RECOVERED: Auto-recovered and fully functional.")
+            # Now uses PHT for the auto-recovery stamp
+            resolved_time = datetime.now(PHT).strftime('%H:%M PHT')
+            add_notification("resolved", f"✅ SYSTEM RECOVERED: Auto-recovered and fully functional at {resolved_time}.")
         notifs["system_state"] = "Operational"
 
-    # Save both databases safely
     with open(codes_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
         
@@ -286,4 +279,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
+                            
