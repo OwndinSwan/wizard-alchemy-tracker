@@ -31,7 +31,8 @@ def fetch_from_discord(channel_id):
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return {"error": "CRITICAL: DISCORD_TOKEN environment variable is missing from GitHub Secrets."}
     
-    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=5"
+    # Increased limit slightly to ensure we catch enough history if posts are months apart
+    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=10"
     req = urllib.request.Request(url)
     
     req.add_header("Authorization", DISCORD_TOKEN)
@@ -57,54 +58,47 @@ def fetch_from_discord(channel_id):
                         if field.get('value'): message_text += "\n" + str(field.get('value'))
                 
                 lines = message_text.split("\n")
-                cleaned_lines = [line.replace('`', '').replace('*', '').replace('#', '').strip() for line in lines]
-                cleaned_lines = [line for line in cleaned_lines if line] 
                 
-                start_parsing = False
-                for i, line in enumerate(cleaned_lines):
-                    
-                    if "expired" in line.lower():
+                for raw_line in lines:
+                    if not raw_line.strip():
                         continue
-                    if i + 1 < len(cleaned_lines) and "expired" in cleaned_lines[i+1].lower():
-                        continue
+                        
+                    # 1. Aggressive Cleanup: Strip quotes, markdown, and (edited) tags
+                    clean_line = raw_line.replace('"', '').replace("'", "").replace('`', '').replace('*', '')
+                    clean_line = re.sub(r'\(edited\).*', '', clean_line).strip()
                     
-                    if "codes:" in line.lower() or line.lower() == "codes":
-                        start_parsing = True
+                    if "expired" in clean_line.lower():
                         continue
-                    
-                    if start_parsing:
-                        clean_code = re.sub(r'\(edited\).*', '', line).strip()
-                        if clean_code:
-                            extracted_codes.append(clean_code)
-                    else:
-                        match_layout6 = re.match(r'^[^a-zA-Z0-9]+\s*([A-Z0-9_\-]+)$', line)
-                        if match_layout6 and len(line) > 3:
-                            candidate = match_layout6.group(1)
-                            if any(char.isdigit() for char in candidate) or candidate.isupper():
-                                extracted_codes.append(candidate)
-                                continue
+                        
+                    # 2. Normalize Delimiters: Turn "&" and the word "and" into standard commas
+                    clean_line = re.sub(r'(?i)\s+\band\b\s+|\s*&\s*', ',', clean_line)
 
-                        match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*["\']?([a-zA-Z0-9_\-]+)["\']?', line)
-                        if match_layout5:
-                            candidate = match_layout5.group(1)
+                    # 3. Prefix Check (Handles: "New Code:", "New Code", "Code:")
+                    prefix_match = re.match(r'(?i)^(?:new\s+code[s]?|use\s+code[s]?|enter\s+code[s]?|code[s]?)\s*[:=-]?\s*(.*)', clean_line)
+                    if prefix_match:
+                        raw_codes_str = prefix_match.group(1)
+                        # Split remaining text by comma to catch multiple codes on one line
+                        for chunk in raw_codes_str.split(','):
+                            candidate = chunk.strip()
                             if len(candidate) > 2 and candidate.lower() not in ["here", "below", "list", "now", "are", "is"]:
                                 extracted_codes.append(candidate)
-                                continue
+                        continue
 
-                        match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
-                        if match_layout4 and len(line) > 3 and (i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-'))):
-                            extracted_codes.append(match_layout4.group(1))
-                            continue
+                    # 4. Multi-Code Naked Line Check (Handles: "ANGEL, DEMON")
+                    if ',' in clean_line:
+                        for chunk in clean_line.split(','):
+                            candidate = chunk.strip()
+                            # Verify it looks like a real code (has numbers or is all caps)
+                            if len(candidate) > 3 and (any(char.isdigit() for char in candidate) or candidate.isupper()):
+                                extracted_codes.append(candidate)
+                        continue
 
-                        match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', line)
-                        if match_layout2:
-                            extracted_codes.append(match_layout2.group(1))
+                    # 5. Single Naked Code Check (Handles: "TITAN")
+                    match_standalone = re.match(r'^([a-zA-Z0-9_\-]+)$', clean_line)
+                    if match_standalone and len(clean_line) > 3:
+                        if any(char.isdigit() for char in clean_line) or clean_line.isupper():
+                            extracted_codes.append(match_standalone.group(1))
                             continue
-                            
-                        match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
-                        if match_layout3 and len(line) > 3:
-                            if any(char.isdigit() for char in line) or line.isupper():
-                                extracted_codes.append(match_layout3.group(1))
                             
             return list(dict.fromkeys(extracted_codes))
             
@@ -178,7 +172,6 @@ def fetch_from_roblox(source_id):
     return None
 
 def main():
-    # File Paths
     codes_path = "codes.json"
     notif_path = "notif.json"
     
@@ -186,15 +179,12 @@ def main():
         print(f"Error: Target database {codes_path} missing from environment root.")
         return
         
-    # Load Core Database
     with open(codes_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
-    # Remove old system_status from codes.json to keep it purely for the frontend
     if "system_status" in database:
         del database["system_status"]
 
-    # Load Notification Database (Create default if it doesn't exist)
     if not os.path.exists(notif_path):
         notifs = {"unread_count": 0, "logs": [], "system_state": "Operational"}
     else:
@@ -202,8 +192,6 @@ def main():
             notifs = json.load(nf)
 
     def add_notification(notif_type, message):
-        """Helper to inject logs and perform log rotation."""
-        # Using PHT and a readable 12-hour AM/PM format
         timestamp = datetime.now(PHT).strftime('%b %d, %I:%M %p PHT')
         notifs["logs"].insert(0, {
             "type": notif_type,
@@ -211,11 +199,9 @@ def main():
             "timestamp": timestamp
         })
         notifs["unread_count"] += 1
-        # Log Rotation: Keep only the latest 30 notifications
         if len(notifs["logs"]) > 30:
             notifs["logs"] = notifs["logs"][:30]
 
-    # Timestamp for codes.json last_updated
     current_time = datetime.now(PHT).isoformat()
     old_system_state = notifs.get("system_state", "Operational")
     run_has_error = False
@@ -235,7 +221,6 @@ def main():
                 latest_error = fresh_codes["error"]
                 print(latest_error)
             elif fresh_codes is not None:
-                # Compare codes to find new ones
                 newly_added = set(fresh_codes) - old_codes
                 if newly_added:
                     for code in newly_added:
@@ -266,21 +251,15 @@ def main():
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
 
-    # ==========================================
-    # AUTO-HEAL & NOTIFICATION RESOLUTION LOGIC
-    # ==========================================
     if run_has_error:
-        # Only log the error if the system wasn't already in an error state
         if old_system_state == "Operational":
             add_notification("error", latest_error)
         notifs["system_state"] = "Error"
     else:
-        # If it was previously broken, log the recovery
         if old_system_state == "Error":
             add_notification("resolved", "✅ SYSTEM RECOVERED: Auto-recovered and fully functional.")
         notifs["system_state"] = "Operational"
 
-    # Save both databases safely
     with open(codes_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
         
@@ -291,4 +270,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+            
