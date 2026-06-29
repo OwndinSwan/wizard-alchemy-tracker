@@ -2,7 +2,7 @@ import urllib.request
 import json
 import re
 import os
-from datetime import datetime, timezone  # NEW: Added for timestamping
+from datetime import datetime, timezone
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
 
@@ -11,7 +11,6 @@ def fetch_from_discord(channel_id):
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return None
     
-    # NEW: Increased limit to 5 to catch multiple codes posted in separate messages!
     url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=5"
     req = urllib.request.Request(url)
     req.add_header("Authorization", DISCORD_TOKEN)
@@ -25,47 +24,61 @@ def fetch_from_discord(channel_id):
             
             extracted_codes = []
             
-            # Loop through all 5 of the most recent messages
             for msg in messages:
-                message_text = msg['content']
+                # NEW: Extract text from standard content AND Discord Embeds (Bot Messages)
+                message_text = msg.get('content', '')
+                for embed in msg.get('embeds', []):
+                    if embed.get('title'): message_text += "\n" + str(embed['title'])
+                    if embed.get('description'): message_text += "\n" + str(embed['description'])
+                    for field in embed.get('fields', []):
+                        if field.get('name'): message_text += "\n" + str(field.get('name'))
+                        if field.get('value'): message_text += "\n" + str(field.get('value'))
+                
+                # Split and clean the lines
                 lines = message_text.split("\n")
+                cleaned_lines = [line.replace('`', '').replace('*', '').replace('#', '').strip() for line in lines]
+                cleaned_lines = [line for line in cleaned_lines if line] # Remove blank lines
                 
                 start_parsing = False
-                for line in lines:
-                    line = line.strip()
-                    if not line:
+                for i, line in enumerate(cleaned_lines):
+                    
+                    # NEW: Global Expiration Filter
+                    # If the current line, or the immediate next line, contains "expired", skip it completely.
+                    if "expired" in line.lower():
+                        continue
+                    if i + 1 < len(cleaned_lines) and "expired" in cleaned_lines[i+1].lower():
                         continue
                     
-                    # Strip standard markdown (# headers, * bolds, ` codeblocks)
-                    clean_line = line.replace('`', '').replace('*', '').replace('#', '').strip()
-                    
                     # [Layout 1]: Developer used "Codes:" as a header
-                    if "Codes:" in line or clean_line.lower() == "codes":
+                    if "codes:" in line.lower() or line.lower() == "codes":
                         start_parsing = True
                         continue
                     
                     if start_parsing:
-                        clean_code = re.sub(r'\(edited\).*', '', clean_line).strip()
+                        clean_code = re.sub(r'\(edited\).*', '', line).strip()
                         if clean_code:
                             extracted_codes.append(clean_code)
                     else:
+                        # [Layout 4]: Bot Two-Line Format (Code on Line 1, Bullet Reward on Line 2)
+                        if i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-')):
+                            match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
+                            if match_layout4 and len(line) > 3:
+                                extracted_codes.append(match_layout4.group(1))
+                                continue
+
                         # [Layout 2]: "CODE - Reward" format
-                        match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', clean_line)
+                        match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', line)
                         if match_layout2:
                             extracted_codes.append(match_layout2.group(1))
                             continue
                             
-                        # [Layout 3]: Naked Standalone Code (e.g., "5MILVISITS" or "THANKYOU5K")
-                        # Rule: Must be a single word (no spaces), > 3 chars, letters/numbers/hyphens only.
-                        match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', clean_line)
-                        
-                        if match_layout3 and len(clean_line) > 3:
-                            # Safeguard: To avoid grabbing random chatter like "Enjoy", naked codes
-                            # usually contain at least one number OR are typed in ALL CAPS.
-                            if any(char.isdigit() for char in clean_line) or clean_line.isupper():
+                        # [Layout 3]: Naked Standalone Code (e.g., "5MILVISITS")
+                        match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
+                        if match_layout3 and len(line) > 3:
+                            if any(char.isdigit() for char in line) or line.isupper():
                                 extracted_codes.append(match_layout3.group(1))
                             
-            # Because we fetched 5 messages, we remove any accidental duplicates before returning
+            # Remove any duplicates generated by reading multiple messages
             return list(dict.fromkeys(extracted_codes))
             
     except Exception as e:
@@ -84,7 +97,6 @@ def fetch_from_roblox(source_id):
             if "universeId" in convert_data:
                 universe_id = convert_data["universeId"]
     except Exception:
-        # If it fails, we assume the user already provided a valid Universe ID
         pass
 
     # Step 2: Fetch the game description using the correct Universe ID
@@ -154,7 +166,6 @@ def main():
                 
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
-            # Notice we do NOT stamp manual games here, because this script didn't check them!
 
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
