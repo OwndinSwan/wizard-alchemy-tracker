@@ -1,6 +1,36 @@
 {
-    "unread_count": 0,
+    "unread_count": 6,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Climb and Jump Tower: SPACE",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Climb and Jump Tower: BRAZIL",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Climb and Jump Tower: TORONTO",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Climb and Jump Tower: ADMIN",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1MILL",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Power Blast Lucky Blocks!: SUMMERBLAST",
+            "timestamp": "Jun 29, 15:39 UTC"
+        },
         {
             "type": "resolved",
             "message": "\u2705 SYSTEM RECOVERED: Auto-recovered and fully functional.",
