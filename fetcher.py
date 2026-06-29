@@ -31,7 +31,6 @@ def fetch_from_discord(channel_id):
     url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=5"
     req = urllib.request.Request(url)
     
-    # Anti-Monitoring Measure: Perfect Chrome Browser Fingerprinting
     req.add_header("Authorization", DISCORD_TOKEN)
     req.add_header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
     req.add_header("Accept", "*/*")
@@ -75,7 +74,6 @@ def fetch_from_discord(channel_id):
                         if clean_code:
                             extracted_codes.append(clean_code)
                     else:
-                        # Layout 6: Emoji/Symbol List
                         match_layout6 = re.match(r'^[^a-zA-Z0-9]+\s*([A-Z0-9_\-]+)$', line)
                         if match_layout6 and len(line) > 3:
                             candidate = match_layout6.group(1)
@@ -83,7 +81,6 @@ def fetch_from_discord(channel_id):
                                 extracted_codes.append(candidate)
                                 continue
 
-                        # Layout 5: Inline Keyword
                         match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*["\']?([a-zA-Z0-9_\-]+)["\']?', line)
                         if match_layout5:
                             candidate = match_layout5.group(1)
@@ -91,20 +88,16 @@ def fetch_from_discord(channel_id):
                                 extracted_codes.append(candidate)
                                 continue
 
-                        # Layout 4: Bot Two-Line Format
-                        if i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-')):
-                            match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
-                            if match_layout4 and len(line) > 3:
-                                extracted_codes.append(match_layout4.group(1))
-                                continue
+                        match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
+                        if match_layout4 and len(line) > 3 and (i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-'))):
+                            extracted_codes.append(match_layout4.group(1))
+                            continue
 
-                        # Layout 2: "CODE - Reward" format
                         match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', line)
                         if match_layout2:
                             extracted_codes.append(match_layout2.group(1))
                             continue
                             
-                        # Layout 3: Naked Standalone Code
                         match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
                         if match_layout3 and len(line) > 3:
                             if any(char.isdigit() for char in line) or line.isupper():
@@ -113,7 +106,6 @@ def fetch_from_discord(channel_id):
             return list(dict.fromkeys(extracted_codes))
             
     except HTTPError as e:
-        # Sentinel catches Discord specific bans/token revocations
         print(f"HTTP Error processing Discord channel {channel_id}: {e.code}")
         if e.code in [401, 403]:
             return {"error": f"CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error {e.code}). Update GitHub Secrets."}
@@ -121,7 +113,6 @@ def fetch_from_discord(channel_id):
     except Exception as e:
         print(f"Extraction error processing Discord channel {channel_id}: {e}")
         return None
-
 
 def fetch_from_roblox(source_id):
     proxies = get_free_proxies()
@@ -179,33 +170,56 @@ def fetch_from_roblox(source_id):
             continue
             
     print(f"Extraction error processing Roblox ID {source_id}: All proxy attempts exhausted.")
-    
-    # Sentinel catches Roblox IP bans if ALL proxies fail
     if last_error_code in [403, 429]:
         return {"error": f"CRITICAL: Roblox API Rate Limit/Block (Error {last_error_code}) across all proxy attempts. Wait 24 hours."}
     return None
 
-
 def main():
-    file_path = "codes.json"
-    if not os.path.exists(file_path):
-        print("Error: Target database codes.json missing from environment root.")
+    # File Paths
+    codes_path = "codes.json"
+    notif_path = "notif.json"
+    
+    if not os.path.exists(codes_path):
+        print(f"Error: Target database {codes_path} missing from environment root.")
         return
         
-    with open(file_path, "r", encoding="utf-8") as f:
+    # Load Core Database
+    with open(codes_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
+    # Remove old system_status from codes.json to keep it purely for the frontend
+    if "system_status" in database:
+        del database["system_status"]
+
+    # Load Notification Database (Create default if it doesn't exist)
+    if not os.path.exists(notif_path):
+        notifs = {"unread_count": 0, "logs": [], "system_state": "Operational"}
+    else:
+        with open(notif_path, "r", encoding="utf-8") as nf:
+            notifs = json.load(nf)
+
+    def add_notification(notif_type, message):
+        """Helper to inject logs and perform log rotation."""
+        timestamp = datetime.now(timezone.utc).strftime('%b %d, %H:%M UTC')
+        notifs["logs"].insert(0, {
+            "type": notif_type,
+            "message": message,
+            "timestamp": timestamp
+        })
+        notifs["unread_count"] += 1
+        # Log Rotation: Keep only the latest 30 notifications
+        if len(notifs["logs"]) > 30:
+            notifs["logs"] = notifs["logs"][:30]
+
     current_time = datetime.now(timezone.utc).isoformat()
-    
-    # The Memory Trigger: Remember the state before the script starts
-    old_status = database.get("system_status", "Operational")
-    
+    old_system_state = notifs.get("system_state", "Operational")
     run_has_error = False
     latest_error = ""
         
     for game in database.get("games", []):
         source_type = game.get("source_type", "manual")
         source_id = game.get("source_id", "")
+        old_codes = set(game.get("codes", []))
         
         if source_type == "discord" and source_id:
             print(f"Querying automated Discord pipeline for: {game['name']}")
@@ -216,10 +230,15 @@ def main():
                 latest_error = fresh_codes["error"]
                 print(latest_error)
             elif fresh_codes is not None:
+                # Compare codes to find new ones
+                newly_added = set(fresh_codes) - old_codes
+                if newly_added:
+                    for code in newly_added:
+                        add_notification("info", f"✨ New code found for {game['name']}: {code}")
+                
                 game["codes"] = fresh_codes
                 game["last_updated"] = current_time 
                 
-            # Anti-Monitoring Measure: Randomized network jitter between 5 and 15 seconds
             time.sleep(random.uniform(5.0, 15.0))
                 
         elif source_type == "roblox" and source_id:
@@ -231,6 +250,11 @@ def main():
                 latest_error = fresh_codes["error"]
                 print(latest_error)
             elif fresh_codes is not None:
+                newly_added = set(fresh_codes) - old_codes
+                if newly_added:
+                    for code in newly_added:
+                        add_notification("info", f"✨ New code found for {game['name']}: {code}")
+                        
                 game["codes"] = fresh_codes
                 game["last_updated"] = current_time 
                 
@@ -238,25 +262,28 @@ def main():
             print(f"Preserving explicit static state for manual module: {game['name']}")
 
     # ==========================================
-    # AUTO-HEAL RESOLUTION LOGIC
+    # AUTO-HEAL & NOTIFICATION RESOLUTION LOGIC
     # ==========================================
     if run_has_error:
-        # The system broke during this run. Flag the error.
-        database["system_status"] = latest_error
+        # Only log the error if the system wasn't already in an error state
+        if old_system_state == "Operational":
+            add_notification("error", latest_error)
+        notifs["system_state"] = "Error"
     else:
-        # The system successfully ran with 0 errors. Check the memory.
-        if "CRITICAL" in old_status.upper() or "ERROR" in old_status.upper():
-            # It was broken, but now it's fixed! Trigger the green banner.
-            resolved_time = datetime.now(timezone.utc).strftime('%H:%M UTC')
-            database["system_status"] = f"RESOLVED: System auto-recovered and is fully functional again at {resolved_time}."
-        elif "RESOLVED" not in old_status.upper():
-            # It was never broken in the first place. Stay operational.
-            database["system_status"] = "Operational"
+        # If it was previously broken, log the recovery
+        if old_system_state == "Error":
+            add_notification("resolved", "✅ SYSTEM RECOVERED: Auto-recovered and fully functional.")
+        notifs["system_state"] = "Operational"
 
-    with open(file_path, "w", encoding="utf-8") as f:
+    # Save both databases safely
+    with open(codes_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
+        
+    with open(notif_path, "w", encoding="utf-8") as nf:
+        json.dump(notifs, nf, indent=4)
+        
     print("Database sync workflow terminated successfully.")
 
 if __name__ == "__main__":
     main()
-                
+        
