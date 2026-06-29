@@ -49,14 +49,10 @@
         },
         {
             "name": "Paint And SEEK!",
-            "codes": [
-                "6KTHANKYOU",
-                "THANKYOU5K",
-                "5MILVISITS"
-            ],
-            "source_type": "discord",
+            "codes": [],
+            "source_type": "roblox",
             "source_id": "1517013661896544286",
-            "last_updated": "2026-06-29T06:52:04.166184+00:00"
+            "last_updated": "2026-06-29T06:57:01+00:00"
         }
     ]
 }
