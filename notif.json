@@ -1,6 +1,51 @@
 {
-    "unread_count": 19,
+    "unread_count": 28,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: cabshark",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: umbraver",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: graon",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: avalanchewyrm",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: nampyra",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: solguard",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: ungolem",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: moovik",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: ssentinel",
+            "timestamp": "Jun 30, 01:42 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: 200M",
@@ -105,51 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1000",
             "timestamp": "Jun 30, 01:04 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: SUMMERBLAST",
-            "timestamp": "Jun 30, 01:04 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Paint And SEEK!: THANKYOU5K",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Paint And SEEK!: 6KTHANKYOU",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Paint And SEEK!: 5MILVISITS",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Anime Fighting Simulator: UPDATE2PLAY",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Anime Fighting Simulator: DELAYCODE",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Wizard Alchemy: spider",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Wizard Alchemy: poison",
-            "timestamp": "Jun 30, 01:03 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Climb and Jump Tower: EVEREST",
-            "timestamp": "Jun 30, 12:56 AM PHT"
         }
     ],
     "system_state": "Operational"
