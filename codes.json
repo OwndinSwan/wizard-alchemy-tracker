@@ -78,5 +78,5 @@
             "last_updated": "2026-06-29T10:48:12.036125+00:00"
         }
     ],
-    "system_status": "CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error 401). Update GitHub Secrets."
+    "system_status": "Operational"
 }
