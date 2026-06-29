@@ -27,6 +27,5 @@ jobs:
       run: |
         git config --global user.name "GitHub Action"
         git config --global user.email "actions@github.com"
-        git add codes.json
+        git add codes.json notif.json
         git diff --quiet && git diff --staged --quiet || (git commit -m "Engine Auto-Sync: Refreshed multi-source structural tracking arrays" && git push)
-        
