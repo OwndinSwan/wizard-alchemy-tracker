@@ -1,5 +1,5 @@
 import urllib.request
-from urllib.error import HTTPError, URLError # NEW: Imported to catch exact network errors
+from urllib.error import HTTPError, URLError 
 import json
 import re
 import os
@@ -197,9 +197,11 @@ def main():
         
     current_time = datetime.now(timezone.utc).isoformat()
     
-    # Ensure system_status exists, default to Operational if this is a fresh run without errors
-    if "system_status" not in database:
-        database["system_status"] = "Operational"
+    # The Memory Trigger: Remember the state before the script starts
+    old_status = database.get("system_status", "Operational")
+    
+    run_has_error = False
+    latest_error = ""
         
     for game in database.get("games", []):
         source_type = game.get("source_type", "manual")
@@ -209,10 +211,10 @@ def main():
             print(f"Querying automated Discord pipeline for: {game['name']}")
             fresh_codes = fetch_from_discord(source_id)
             
-            # Catch Sentinel Dict response
             if isinstance(fresh_codes, dict) and "error" in fresh_codes:
-                database["system_status"] = fresh_codes["error"]
-                print(fresh_codes["error"])
+                run_has_error = True
+                latest_error = fresh_codes["error"]
+                print(latest_error)
             elif fresh_codes is not None:
                 game["codes"] = fresh_codes
                 game["last_updated"] = current_time 
@@ -224,10 +226,10 @@ def main():
             print(f"Querying automated Roblox description pipeline for: {game['name']}")
             fresh_codes = fetch_from_roblox(source_id)
             
-            # Catch Sentinel Dict response
             if isinstance(fresh_codes, dict) and "error" in fresh_codes:
-                database["system_status"] = fresh_codes["error"]
-                print(fresh_codes["error"])
+                run_has_error = True
+                latest_error = fresh_codes["error"]
+                print(latest_error)
             elif fresh_codes is not None:
                 game["codes"] = fresh_codes
                 game["last_updated"] = current_time 
@@ -235,10 +237,26 @@ def main():
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
 
+    # ==========================================
+    # AUTO-HEAL RESOLUTION LOGIC
+    # ==========================================
+    if run_has_error:
+        # The system broke during this run. Flag the error.
+        database["system_status"] = latest_error
+    else:
+        # The system successfully ran with 0 errors. Check the memory.
+        if "CRITICAL" in old_status.upper() or "ERROR" in old_status.upper():
+            # It was broken, but now it's fixed! Trigger the green banner.
+            resolved_time = datetime.now(timezone.utc).strftime('%H:%M UTC')
+            database["system_status"] = f"RESOLVED: System auto-recovered and is fully functional again at {resolved_time}."
+        elif "RESOLVED" not in old_status.upper():
+            # It was never broken in the first place. Stay operational.
+            database["system_status"] = "Operational"
+
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(database, f, indent=4)
     print("Database sync workflow terminated successfully.")
 
 if __name__ == "__main__":
     main()
-        
+                
