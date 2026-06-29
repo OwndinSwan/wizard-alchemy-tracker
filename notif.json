@@ -1,6 +1,11 @@
 {
-    "unread_count": 1,
+    "unread_count": 2,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for [UPD] Mini War: NOLAGPLZ",
+            "timestamp": "Jun 30, 06:07 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Anime Fighting Simulator: QUICKSHUTDOWN",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: SORRY",
             "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1MILL",
-            "timestamp": "Jun 30, 01:04 AM PHT"
         }
     ],
     "system_state": "Operational"
