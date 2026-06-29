@@ -5,9 +5,12 @@ import re
 import os
 import random
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
+
+# Define Philippine Standard Time (UTC+8)
+PHT = timezone(timedelta(hours=8))
 
 def get_free_proxies():
     """Fetches a list of free public HTTP proxies to bypass rate limits."""
@@ -200,7 +203,8 @@ def main():
 
     def add_notification(notif_type, message):
         """Helper to inject logs and perform log rotation."""
-        timestamp = datetime.now(timezone.utc).strftime('%b %d, %H:%M UTC')
+        # Using PHT and a readable 12-hour AM/PM format
+        timestamp = datetime.now(PHT).strftime('%b %d, %I:%M %p PHT')
         notifs["logs"].insert(0, {
             "type": notif_type,
             "message": message,
@@ -211,7 +215,8 @@ def main():
         if len(notifs["logs"]) > 30:
             notifs["logs"] = notifs["logs"][:30]
 
-    current_time = datetime.now(timezone.utc).isoformat()
+    # Timestamp for codes.json last_updated
+    current_time = datetime.now(PHT).isoformat()
     old_system_state = notifs.get("system_state", "Operational")
     run_has_error = False
     latest_error = ""
@@ -286,5 +291,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
     
