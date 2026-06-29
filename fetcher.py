@@ -11,7 +11,8 @@ def fetch_from_discord(channel_id):
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return None
     
-    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=1"
+    # NEW: Increased limit to 5 to catch multiple codes posted in separate messages!
+    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=5"
     req = urllib.request.Request(url)
     req.add_header("Authorization", DISCORD_TOKEN)
     req.add_header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
@@ -22,38 +23,50 @@ def fetch_from_discord(channel_id):
             if not messages:
                 return None
             
-            message_text = messages[0]['content']
-            lines = message_text.split("\n")
             extracted_codes = []
             
-            start_parsing = False
-            for line in lines:
-                line = line.strip()
-                if not line:
-                    continue
+            # Loop through all 5 of the most recent messages
+            for msg in messages:
+                message_text = msg['content']
+                lines = message_text.split("\n")
                 
-                # [Layout 1]: Developer used "Codes:" as a header (Like Wizard Alchemy)
-                if "Codes:" in line or line.replace('`', '').replace('*', '').strip() == "Codes":
-                    start_parsing = True
-                    continue
-                
-                if start_parsing:
-                    # Extract everything below the header
-                    clean_code = re.sub(r'\(edited\).*', '', line).replace('`', '').strip()
-                    if clean_code:
-                        extracted_codes.append(clean_code)
-                else:
-                    # [Layout 2]: Developer used "CODE - Reward" format
-                    # Clean out the markdown backticks and bold stars first
-                    clean_line = line.replace('`', '').replace('*', '').strip()
+                start_parsing = False
+                for line in lines:
+                    line = line.strip()
+                    if not line:
+                        continue
                     
-                    # Look for alphanumeric text followed by a hyphen/colon and a space
-                    match = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', clean_line)
-                    if match:
-                        # match.group(1) is the Code, match.group(2) is the Reward
-                        extracted_codes.append(match.group(1))
+                    # Strip standard markdown (# headers, * bolds, ` codeblocks)
+                    clean_line = line.replace('`', '').replace('*', '').replace('#', '').strip()
+                    
+                    # [Layout 1]: Developer used "Codes:" as a header
+                    if "Codes:" in line or clean_line.lower() == "codes":
+                        start_parsing = True
+                        continue
+                    
+                    if start_parsing:
+                        clean_code = re.sub(r'\(edited\).*', '', clean_line).strip()
+                        if clean_code:
+                            extracted_codes.append(clean_code)
+                    else:
+                        # [Layout 2]: "CODE - Reward" format
+                        match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', clean_line)
+                        if match_layout2:
+                            extracted_codes.append(match_layout2.group(1))
+                            continue
+                            
+                        # [Layout 3]: Naked Standalone Code (e.g., "5MILVISITS" or "THANKYOU5K")
+                        # Rule: Must be a single word (no spaces), > 3 chars, letters/numbers/hyphens only.
+                        match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', clean_line)
                         
-            return extracted_codes
+                        if match_layout3 and len(clean_line) > 3:
+                            # Safeguard: To avoid grabbing random chatter like "Enjoy", naked codes
+                            # usually contain at least one number OR are typed in ALL CAPS.
+                            if any(char.isdigit() for char in clean_line) or clean_line.isupper():
+                                extracted_codes.append(match_layout3.group(1))
+                            
+            # Because we fetched 5 messages, we remove any accidental duplicates before returning
+            return list(dict.fromkeys(extracted_codes))
             
     except Exception as e:
         print(f"Extraction error processing Discord channel {channel_id}: {e}")
@@ -118,7 +131,7 @@ def main():
     with open(file_path, "r", encoding="utf-8") as f:
         database = json.load(f)
         
-    # NEW: Generate a standard UTC timestamp string for this specific script run
+    # Generate a standard UTC timestamp string for this specific script run
     current_time = datetime.now(timezone.utc).isoformat()
         
     for game in database.get("games", []):
@@ -130,14 +143,14 @@ def main():
             fresh_codes = fetch_from_discord(source_id)
             if fresh_codes is not None:
                 game["codes"] = fresh_codes
-                game["last_updated"] = current_time  # NEW: Stamp the check time
+                game["last_updated"] = current_time  # Stamp the check time
                 
         elif source_type == "roblox" and source_id:
             print(f"Querying automated Roblox description pipeline for: {game['name']}")
             fresh_codes = fetch_from_roblox(source_id)
             if fresh_codes is not None:
                 game["codes"] = fresh_codes
-                game["last_updated"] = current_time  # NEW: Stamp the check time
+                game["last_updated"] = current_time  # Stamp the check time
                 
         else:
             print(f"Preserving explicit static state for manual module: {game['name']}")
@@ -149,4 +162,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
+    
