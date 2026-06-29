@@ -2,7 +2,7 @@ import urllib.request
 import json
 import re
 import os
-import random  # NEW: Added to shuffle proxies
+import random  # Added to shuffle proxies
 from datetime import datetime, timezone
 
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN", "")
@@ -72,6 +72,16 @@ def fetch_from_discord(channel_id):
                         if clean_code:
                             extracted_codes.append(clean_code)
                     else:
+                        # [Layout 5]: Inline Keyword (e.g., 'new code: "Zombies"' or 'USE CODE GALACTIC')
+                        # Scans for conversational action verbs and handles enclosing quotation marks
+                        match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*["\']?([a-zA-Z0-9_\-]+)["\']?', line)
+                        if match_layout5:
+                            candidate = match_layout5.group(1)
+                            # Security check: Ignore common conversational layout fragments
+                            if len(candidate) > 2 and candidate.lower() not in ["here", "below", "list", "now", "are", "is"]:
+                                extracted_codes.append(candidate)
+                                continue
+
                         # [Layout 4]: Bot Two-Line Format (Code on Line 1, Bullet Reward on Line 2)
                         if i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-')):
                             match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
@@ -197,4 +207,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-                                 
+    
