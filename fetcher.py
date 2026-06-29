@@ -31,7 +31,7 @@ def fetch_from_discord(channel_id):
         print("Skipping Discord Fetch: Hidden vault DISCORD_TOKEN environmental flag missing.")
         return {"error": "CRITICAL: DISCORD_TOKEN environment variable is missing from GitHub Secrets."}
     
-    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=5"
+    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit=10"
     req = urllib.request.Request(url)
     
     req.add_header("Authorization", DISCORD_TOKEN)
@@ -61,7 +61,10 @@ def fetch_from_discord(channel_id):
                 cleaned_lines = [line for line in cleaned_lines if line] 
                 
                 start_parsing = False
-                for i, line in enumerate(cleaned_lines):
+                for i, raw_line in enumerate(cleaned_lines):
+                    
+                    # Pre-clean the (edited) tag immediately so it doesn't break naked codes
+                    line = re.sub(r'\s*\(edited\).*', '', raw_line).strip()
                     
                     if "expired" in line.lower():
                         continue
@@ -73,10 +76,10 @@ def fetch_from_discord(channel_id):
                         continue
                     
                     if start_parsing:
-                        clean_code = re.sub(r'\(edited\).*', '', line).strip()
-                        if clean_code:
-                            extracted_codes.append(clean_code)
+                        if line:
+                            extracted_codes.append(line)
                     else:
+                        # Layout 6: Emoji/Symbol List
                         match_layout6 = re.match(r'^[^a-zA-Z0-9]+\s*([A-Z0-9_\-]+)$', line)
                         if match_layout6 and len(line) > 3:
                             candidate = match_layout6.group(1)
@@ -84,23 +87,63 @@ def fetch_from_discord(channel_id):
                                 extracted_codes.append(candidate)
                                 continue
 
-                        match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*["\']?([a-zA-Z0-9_\-]+)["\']?', line)
+                        # Layout 5: Inline Keyword (Upgraded for Multi-Codes & Missing Colons)
+                        match_layout5 = re.search(r'(?i)(?:(?:use|new|enter)\s+code[s]?\s*[:=]?|code[s]?\s*[:=])\s*(.*)', line)
                         if match_layout5:
-                            candidate = match_layout5.group(1)
-                            if len(candidate) > 2 and candidate.lower() not in ["here", "below", "list", "now", "are", "is"]:
-                                extracted_codes.append(candidate)
+                            raw_candidates = match_layout5.group(1)
+                            
+                            # Handle explicitly quoted codes (e.g. "SPACE & 500MVISITS")
+                            quoted_match = re.findall(r'["\']([a-zA-Z0-9_\-\s&,]+)["\']', raw_candidates)
+                            if quoted_match:
+                                text_to_parse = quoted_match[0]
+                            else:
+                                text_to_parse = raw_candidates
+                                
+                            # Convert ampersands to commas to unify splitting
+                            normalized = re.sub(r'(?i)\s+and\s+|\s*&\s*', ',', text_to_parse)
+                            chunks = normalized.split(',')
+                            found_valid = False
+                            
+                            for chunk in chunks:
+                                # Grab the first block of alphanumeric text per chunk
+                                code_match = re.search(r'([a-zA-Z0-9_\-]+)', chunk)
+                                if code_match:
+                                    candidate = code_match.group(1)
+                                    if len(candidate) > 2 and candidate.lower() not in ["here", "below", "list", "now", "are", "is"]:
+                                        extracted_codes.append(candidate)
+                                        found_valid = True
+                            
+                            if found_valid:
                                 continue
 
+                        # Layout 3.5: Naked Multi-Code (e.g. "ANGEL, DEMON")
+                        if ',' in line or '&' in line:
+                            chunks = re.sub(r'(?i)\s+and\s+|\s*&\s*', ',', line).split(',')
+                            valid_chunks = []
+                            for chunk in chunks:
+                                candidate = chunk.strip().replace('"', '').replace("'", "")
+                                if re.match(r'^([a-zA-Z0-9_\-]+)$', candidate) and len(candidate) > 3:
+                                    if any(char.isdigit() for c in candidate) or candidate.isupper():
+                                        valid_chunks.append(candidate)
+                            
+                            # Extremely strict: Only extract if EVERY comma-separated item is a valid code
+                            if len(valid_chunks) > 0 and len(valid_chunks) == len(chunks):
+                                extracted_codes.extend(valid_chunks)
+                                continue
+
+                        # Layout 4: Bot Two-Line Format
                         match_layout4 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
                         if match_layout4 and len(line) > 3 and (i + 1 < len(cleaned_lines) and (cleaned_lines[i+1].startswith('•') or cleaned_lines[i+1].startswith('-'))):
                             extracted_codes.append(match_layout4.group(1))
                             continue
 
+                        # Layout 2: "CODE - Reward" format
                         match_layout2 = re.match(r'^([a-zA-Z0-9_\-]+?)\s*[-:]\s+(.*)', line)
                         if match_layout2:
                             extracted_codes.append(match_layout2.group(1))
                             continue
                             
+                        # Layout 3: Naked Standalone Code
                         match_layout3 = re.match(r'^([a-zA-Z0-9_\-]+)$', line)
                         if match_layout3 and len(line) > 3:
                             if any(char.isdigit() for char in line) or line.isupper():
@@ -291,5 +334,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    
+                    
