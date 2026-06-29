@@ -1,6 +1,11 @@
 {
-    "unread_count": 0,
+    "unread_count": 1,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Anime Fighting Simulator: QUICKSHUTDOWN",
+            "timestamp": "Jun 30, 03:53 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: cabshark",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1MILL",
-            "timestamp": "Jun 30, 01:04 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 1000",
             "timestamp": "Jun 30, 01:04 AM PHT"
         }
     ],
