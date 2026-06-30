@@ -142,13 +142,6 @@
             "source_type": "discord",
             "source_id": "1441439059649105952",
             "last_updated": "2026-06-30T22:12:54.867188+08:00"
-        },
-        {
-            "name": "Test",
-            "codes": [],
-            "source_type": "manual",
-            "source_id": "",
-            "last_updated": "2026-06-30T23:47:52+08:00"
         }
     ]
 }
