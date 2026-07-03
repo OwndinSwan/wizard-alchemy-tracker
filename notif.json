@@ -1,6 +1,11 @@
 {
-    "unread_count": 1,
+    "unread_count": 2,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: clacerglaw",
+            "timestamp": "Jul 04, 12:24 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Evomon: EVO120HYPE",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: GOTHICSCHOOL",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: BUNNY",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
