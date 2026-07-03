@@ -1,6 +1,11 @@
 {
-    "unread_count": 0,
+    "unread_count": 1,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Evomon: EVO120HYPE",
+            "timestamp": "Jul 03, 07:30 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for [UPD] Mini War: NOLAGPLZ",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: BUNNY",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: SORRY",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
