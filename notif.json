@@ -1,6 +1,11 @@
 {
-    "unread_count": 2,
+    "unread_count": 3,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Gym Star Simulator: WORLDCUP",
+            "timestamp": "Jul 04, 06:53 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: clacerglaw",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: HALLOGYM",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: GOTHICSCHOOL",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
