@@ -1,6 +1,16 @@
 {
-    "unread_count": 5,
+    "unread_count": 7,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Anime Fighting Simulator: SWORDINCIDENT",
+            "timestamp": "Jul 12, 10:29 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Anime Fighting Simulator: UPD4RELEASE",
+            "timestamp": "Jul 12, 10:29 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: sdorherm",
@@ -139,16 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: BIGTURKEY",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: SWEATMAX",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: NEW",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
