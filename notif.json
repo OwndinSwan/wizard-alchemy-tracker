@@ -1,6 +1,11 @@
 {
-    "unread_count": 8,
+    "unread_count": 9,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 2MILL",
+            "timestamp": "Jul 18, 11:54 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: lolteag",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: LEGDAY",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: OLYMPIA",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
