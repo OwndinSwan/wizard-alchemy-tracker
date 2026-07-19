@@ -1,6 +1,16 @@
 {
-    "unread_count": 9,
+    "unread_count": 11,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: UPDATEDAYSWAG",
+            "timestamp": "Jul 19, 10:27 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: DELAY",
+            "timestamp": "Jul 19, 10:27 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Power Blast Lucky Blocks!: 2MILL",
@@ -139,16 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: 500M",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: CAMP",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: LEGDAY",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
