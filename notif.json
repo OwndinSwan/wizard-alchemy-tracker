@@ -1,6 +1,11 @@
 {
-    "unread_count": 11,
+    "unread_count": 12,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Evomon: 240evoRISE",
+            "timestamp": "Jul 23, 10:28 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: UPDATEDAYSWAG",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: 100M",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: 500M",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
