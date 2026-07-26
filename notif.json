@@ -1,6 +1,16 @@
 {
-    "unread_count": 13,
+    "unread_count": 15,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: MUTATE",
+            "timestamp": "Jul 26, 04:34 PM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: SORRY4DELAY",
+            "timestamp": "Jul 26, 04:34 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: dmupner",
@@ -139,16 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: OVERDRIVE",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: STALCRY",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: FRIENDTRAINER",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
