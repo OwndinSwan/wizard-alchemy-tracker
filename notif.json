@@ -1,6 +1,11 @@
 {
-    "unread_count": 16,
+    "unread_count": 17,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Anime Fighting Simulator: DIMENSION2",
+            "timestamp": "Aug 02, 05:52 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: SUMMERHEAT",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: OCTOPUS",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: 50M",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
