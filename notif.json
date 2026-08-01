@@ -1,6 +1,11 @@
 {
-    "unread_count": 15,
+    "unread_count": 16,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Gym Star Simulator: SUMMERHEAT",
+            "timestamp": "Aug 01, 04:16 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: MUTATE",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: 50M",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: OVERDRIVE",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
