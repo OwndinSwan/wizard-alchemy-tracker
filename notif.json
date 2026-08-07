@@ -1,6 +1,11 @@
 {
-    "unread_count": 17,
+    "unread_count": 18,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: sylvar",
+            "timestamp": "Aug 07, 11:54 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Anime Fighting Simulator: DIMENSION2",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: 200M",
-            "timestamp": "Jun 30, 01:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: OCTOPUS",
             "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
