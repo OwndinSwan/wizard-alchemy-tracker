@@ -1,6 +1,11 @@
 {
-    "unread_count": 18,
+    "unread_count": 19,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: scared",
+            "timestamp": "Aug 14, 11:49 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: sylvar",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: ssentinel",
             "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: 200M",
-            "timestamp": "Jun 30, 01:28 AM PHT"
         }
     ],
     "system_state": "Operational"
