@@ -1,6 +1,16 @@
 {
-    "unread_count": 19,
+    "unread_count": 21,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: SWAGGYBOI",
+            "timestamp": "Aug 16, 11:18 PM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: NODELAYSWAG",
+            "timestamp": "Aug 16, 11:18 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: scared",
@@ -139,16 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: ungolem",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: moovik",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: ssentinel",
             "timestamp": "Jun 30, 01:42 AM PHT"
         }
     ],
