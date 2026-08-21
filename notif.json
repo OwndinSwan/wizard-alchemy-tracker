@@ -1,6 +1,11 @@
 {
-    "unread_count": 21,
+    "unread_count": 22,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: Lygear",
+            "timestamp": "Aug 21, 11:30 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: SWAGGYBOI",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: solguard",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: ungolem",
             "timestamp": "Jun 30, 01:42 AM PHT"
         }
     ],
