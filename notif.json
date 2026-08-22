@@ -1,6 +1,21 @@
 {
-    "unread_count": 22,
+    "unread_count": 25,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: - Swaggin - 2x credits for 12 hours and a Pirate Chest",
+            "timestamp": "Aug 23, 05:18 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: - Iron - 20 Pirate Wood and 12 Pirate Iron",
+            "timestamp": "Aug 23, 05:18 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: - Pirate - 2x Pirate Pass XP for 24 hours",
+            "timestamp": "Aug 23, 05:18 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: Lygear",
@@ -134,21 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: graon",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: avalanchewyrm",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: nampyra",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: solguard",
             "timestamp": "Jun 30, 01:42 AM PHT"
         }
     ],
