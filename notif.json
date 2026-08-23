@@ -1,6 +1,21 @@
 {
-    "unread_count": 25,
+    "unread_count": 28,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: Swaggin - 2x credits for 12 hours and a Pirate Chest",
+            "timestamp": "Aug 23, 11:47 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: Iron - 20 Pirate Wood and 12 Pirate Iron",
+            "timestamp": "Aug 23, 11:47 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: Pirate - 2x Pirate Pass XP for 24 hours",
+            "timestamp": "Aug 23, 11:47 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: - Swaggin - 2x credits for 12 hours and a Pirate Chest",
@@ -135,21 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Anime Fighting Simulator: QUICKSHUTDOWN",
             "timestamp": "Jun 30, 03:53 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: cabshark",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: umbraver",
-            "timestamp": "Jun 30, 01:42 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: graon",
-            "timestamp": "Jun 30, 01:42 AM PHT"
         }
     ],
     "system_state": "Operational"
