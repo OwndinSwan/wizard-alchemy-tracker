@@ -1,6 +1,16 @@
 {
-    "unread_count": 28,
+    "unread_count": 30,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: oblivion",
+            "timestamp": "Aug 29, 01:33 PM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: abyssal",
+            "timestamp": "Aug 29, 01:33 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: Swaggin - 2x credits for 12 hours and a Pirate Chest",
@@ -140,16 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Evomon: EVO120HYPE",
             "timestamp": "Jul 03, 07:30 PM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for [UPD] Mini War: NOLAGPLZ",
-            "timestamp": "Jun 30, 06:07 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Anime Fighting Simulator: QUICKSHUTDOWN",
-            "timestamp": "Jun 30, 03:53 AM PHT"
         }
     ],
     "system_state": "Operational"
