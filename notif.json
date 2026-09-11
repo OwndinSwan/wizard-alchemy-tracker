@@ -1,6 +1,11 @@
 {
-    "unread_count": 32,
+    "unread_count": 33,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: bigopus",
+            "timestamp": "Sep 12, 02:10 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: nexa",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Power Blast Lucky Blocks!: INDEPENDENCE",
             "timestamp": "Jul 07, 02:44 PM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: WORLDCUP",
-            "timestamp": "Jul 04, 06:53 PM PHT"
         }
     ],
     "system_state": "Operational"
