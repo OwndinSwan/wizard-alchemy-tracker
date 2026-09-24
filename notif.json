@@ -1,6 +1,11 @@
 {
-    "unread_count": 35,
+    "unread_count": 36,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Gym Star Simulator: SPACEFORCE",
+            "timestamp": "Sep 25, 12:28 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: worldboss",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Anime Fighting Simulator: SWORDINCIDENT",
-            "timestamp": "Jul 12, 10:29 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Anime Fighting Simulator: UPD4RELEASE",
             "timestamp": "Jul 12, 10:29 AM PHT"
         }
     ],
