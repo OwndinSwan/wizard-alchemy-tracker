@@ -1,6 +1,11 @@
 {
-    "unread_count": 38,
+    "unread_count": 39,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: anubael",
+            "timestamp": "Oct 10, 01:57 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: rainimp",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: DELAY",
             "timestamp": "Jul 19, 10:27 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Power Blast Lucky Blocks!: 2MILL",
-            "timestamp": "Jul 18, 11:54 PM PHT"
         }
     ],
     "system_state": "Operational"
