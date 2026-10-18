@@ -1,6 +1,16 @@
 {
-    "unread_count": 40,
+    "unread_count": 42,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: SPOOKY",
+            "timestamp": "Oct 19, 06:45 AM PHT"
+        },
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Survive Zombie Arena: DUNGEONS",
+            "timestamp": "Oct 19, 06:45 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: Luminara",
@@ -140,16 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: dmupner",
             "timestamp": "Jul 25, 12:33 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Evomon: 240evoRISE",
-            "timestamp": "Jul 23, 10:28 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Survive Zombie Arena: UPDATEDAYSWAG",
-            "timestamp": "Jul 19, 10:27 AM PHT"
         }
     ],
     "system_state": "Operational"
