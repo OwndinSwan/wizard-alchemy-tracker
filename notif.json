@@ -1,6 +1,11 @@
 {
-    "unread_count": 42,
+    "unread_count": 43,
     "logs": [
+        {
+            "type": "error",
+            "message": "CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error 403). Update GitHub Secrets.",
+            "timestamp": "Oct 21, 02:54 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: SPOOKY",
@@ -145,12 +150,7 @@
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: SORRY4DELAY",
             "timestamp": "Jul 26, 04:34 PM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Catch a Monster: dmupner",
-            "timestamp": "Jul 25, 12:33 AM PHT"
         }
     ],
-    "system_state": "Operational"
+    "system_state": "Error"
 }
