@@ -1,6 +1,11 @@
 {
-    "unread_count": 43,
+    "unread_count": 44,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: Gravitas",
+            "timestamp": "Oct 24, 12:26 AM PHT"
+        },
         {
             "type": "error",
             "message": "CRITICAL: Discord Token Invalid, Revoked, or Missing Permissions (Error 403). Update GitHub Secrets.",
@@ -144,11 +149,6 @@
         {
             "type": "info",
             "message": "\u2728 New code found for Survive Zombie Arena: MUTATE",
-            "timestamp": "Jul 26, 04:34 PM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Survive Zombie Arena: SORRY4DELAY",
             "timestamp": "Jul 26, 04:34 PM PHT"
         }
     ],
