@@ -1,6 +1,11 @@
 {
-    "unread_count": 44,
+    "unread_count": 45,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Gym Star Simulator: HALLOGYMSTAR",
+            "timestamp": "Oct 25, 06:41 PM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Catch a Monster: Gravitas",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: SUMMERHEAT",
             "timestamp": "Aug 01, 04:16 PM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Survive Zombie Arena: MUTATE",
-            "timestamp": "Jul 26, 04:34 PM PHT"
         }
     ],
     "system_state": "Error"
