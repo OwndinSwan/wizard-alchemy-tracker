@@ -1,6 +1,11 @@
 {
-    "unread_count": 45,
+    "unread_count": 46,
     "logs": [
+        {
+            "type": "info",
+            "message": "\u2728 New code found for Catch a Monster: Palejack",
+            "timestamp": "Oct 31, 03:51 AM PHT"
+        },
         {
             "type": "info",
             "message": "\u2728 New code found for Gym Star Simulator: HALLOGYMSTAR",
@@ -145,11 +150,6 @@
             "type": "info",
             "message": "\u2728 New code found for Anime Fighting Simulator: DIMENSION2",
             "timestamp": "Aug 02, 05:52 AM PHT"
-        },
-        {
-            "type": "info",
-            "message": "\u2728 New code found for Gym Star Simulator: SUMMERHEAT",
-            "timestamp": "Aug 01, 04:16 PM PHT"
         }
     ],
     "system_state": "Error"
